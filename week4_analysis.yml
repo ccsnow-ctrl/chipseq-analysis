@@ -1,0 +1,16 @@
+name: chipseq_analysis
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.9
+  - pandas
+  - matplotlib
+  - seaborn
+  - jupyter
+  - ipykernel
+  - numpy
+  - scipy
+  - pybedtools
+  - matplotlib-venn

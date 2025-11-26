@@ -1,0 +1,102 @@
+channel1
+input: Channel.fromPath
+output: goes into fastqc, goes into trimmomatic
+
+- 
+
+FASTQC
+input: channel1
+output: a report (file 1), channel2
+
+TRIMMOMATIC
+input: channel1, adapters file
+output: goes into channel2, goes into BOWTIE2AlIGN
+
+BOWTIE2_BUILD
+input:
+genome file
+output: goes into BOWTIE2ALIGN
+
+BOWTIE2ALIGN
+input: BOWTIE2_BUILD, TRIMMOMATIC
+output: into TAGDIR, into SAMTOOLS flagstat
+
+SAMTOOLS_FLAGSTAT
+input: BOWTIE2ALIGN
+output: into channel2
+
+channel2
+input: TRIM, SAMTOOLS_FLAGSTAT, FASTQC
+output: MULTIQC
+
+MULTIQC
+input: channel2
+output: report (file 2)
+
+SAMTOOLS_SORT
+input: BOWTIE2ALIGN
+output: SAMTOOLS_IDX
+
+SAMTOOLS_IDX
+input: SAMTOOLS_SORT
+output:BAMCOVERAGE
+
+BAMCOVERAGE
+input: SAMTOOLS_IDX
+output: channel3, channel4
+
+channel3
+input: BAMCOVERAGE
+output: into COMPUTEMATRIX
+
+COMPUTEMATRIX:
+input:channel3, window file, bed file
+output: into PLOTPROFILE
+
+PLOTPROFILE
+input: COMPUTEMATRIX
+output: file3
+
+channel4
+input: BAMCOVERAGE
+output: into MULTIBWSUMMARY
+
+MULTIBWSUMMARY
+input: channel4
+output: PLOTCORRELATION
+
+PLOTCORRELATION
+input: MULTIBWSUMMARY
+output: file 4
+
+TAGDIR
+input: BOWTIE2ALIGN
+output: channel 5
+
+channel5
+input: TAGDIR
+output: FINDPEAKS
+
+FINDPEAKS
+input: channel5
+output: POS2BED
+
+channel6
+input: POS2BED
+output: INTERSECT
+
+INTERSECT
+input: channel5
+output: REMOVE
+
+REMOVE
+input: INTERSECT, blacklist file
+ouput: into ANNOTATE, FIND_MOTIFS_GENOME
+
+ANNOTATE
+input: genome file, gtf file, REMOVE
+output: file5
+
+FIND_MOTIFS_GENOME
+input: REMOVE
+ouput: genome file
