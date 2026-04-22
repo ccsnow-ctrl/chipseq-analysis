@@ -1,3 +1,0 @@
-task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
-4	ef/f490f3	3231325	FASTQC (3)	FAILED	127	2025-11-25 22:19:09.639	249ms	152ms	-	-	-	-	-
-3	1e/f59cf0	3231387	FASTQC (2)	ABORTED	-	2025-11-25 22:19:09.904	-	-	-	-	-	-	-
